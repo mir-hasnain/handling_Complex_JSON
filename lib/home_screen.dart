@@ -14,6 +14,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int iterator = 0;
+  List<Color> colorArr = [Colors.black,Colors.deepOrange,Colors.green,Colors.blue,Colors.teal,Colors.deepPurpleAccent,Colors.limeAccent,Colors.pink];
+  bool isHover = false;
   List<UserModel> userList = [];
   Future<List<UserModel>> getUsers() async {
     final http.Response response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
@@ -30,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black54,
       appBar: AppBar(
         centerTitle: true,
         title: const Row(
@@ -46,18 +50,50 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: FutureBuilder(future:getUsers(),builder: (context,AsyncSnapshot<List<UserModel>> snapshot){
               return ListView.builder(itemCount:userList.length,itemBuilder: (context,index){
-                return Card(
-                  child: Column(
-                    children: [
-                      MyRow(title: 'ID', value: snapshot.data![index].id.toString()),
-                      MyRow(title: 'Name', value: snapshot.data![index].name.toString()),
-                      MyRow(title: 'Email', value: snapshot.data![index].email.toString()),
-                      MyRow(title: 'Address,city', value: snapshot.data![index].address!.city.toString()),
-                      MyRow(title: 'Address,geo,Lattitude', value: snapshot.data![index].address!.geo!.lat.toString()),
-                      MyRow(title: 'Address,geo,Longitude', value: snapshot.data![index].address!.geo!.lng.toString()),
-                    ],
+                if(index%2 == 0){
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: InkWell(
+                    onTap: (){
+                      if(iterator >= colorArr.length-1)
+                      {
+                        iterator%=(colorArr.length-1);
+                      }else{
+                        iterator++;
+                      }
+                      setState(() {
+                      });
+                    },
+                    child: Container(
+                      height:200,
+                      width: 250,
+                      decoration: BoxDecoration(
+                        color: colorArr[iterator],
+                        borderRadius: const BorderRadius.all(Radius.circular(50)),
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 10,
+                            color: Colors.white,
+                          )
+                        ]
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyRow(title: 'ID', value: snapshot.data![index].id.toString()),
+                          MyRow(title: 'Name', value: snapshot.data![index].name.toString()),
+                          MyRow(title: 'Email', value: snapshot.data![index].email.toString()),
+                          MyRow(title: 'Address,city', value: snapshot.data![index].address!.city.toString()),
+                          MyRow(title: 'Address,geo,Lattitude', value: snapshot.data![index].address!.geo!.lat.toString()),
+                          MyRow(title: 'Address,geo,Longitude', value: snapshot.data![index].address!.geo!.lng.toString()),
+                        ],
+                      ),
+                    ),
                   ),
                 );
+                }else{
+                  return const SizedBox(height: 20,);
+                }
               });
             }),
           )

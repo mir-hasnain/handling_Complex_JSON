@@ -5,12 +5,17 @@ class MyRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title),
-      Text(value),
-      ],
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w500),),
+          Text(value,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w500),),
+          ],
+        ),
+      ),
     );
   }
 }
